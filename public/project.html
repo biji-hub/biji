@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Projects Portfolio</title>
+
+  <!-- Fonts and Styles -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(to right, #e0eafc, #cfdef3);
+      color: #333;
+      padding: 20px;
+      min-height: 100vh;
+    }
+
+    .nav {
+      display: flex;
+      justify-content: center;
+      background-color: #ffffffcc;
+      padding: 20px;
+      gap: 30px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .nav a {
+      text-decoration: none;
+      color: #333;
+      font-weight: 600;
+      transition: color 0.3s ease;
+    }
+
+    .nav a:hover {
+      color: #0077cc;
+    }
+
+    header h1 {
+      text-align: center;
+      color: #0077cc;
+      margin: 30px 0 10px;
+    }
+
+    section {
+      max-width: 800px;
+      margin: auto;
+      background: #fff;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    }
+
+    h2, h3 {
+      text-align: center;
+      color: #444;
+      margin-bottom: 20px;
+    }
+
+    .project-item {
+      margin-bottom: 20px;
+      padding: 15px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      background-color: #f9f9f9;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      margin-top: 30px;
+    }
+
+    input, textarea {
+      padding: 12px;
+      font-size: 1em;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      background-color: #0077cc;
+      color: white;
+      border: none;
+      padding: 12px;
+      font-size: 1em;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #005fa3;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <div class="nav">
+    <a href="home2.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="contact.html">Contact</a>
+  </div>
+
+  <!-- Header -->
+  <header>
+    <h1>PROJECTS</h1>
+  </header>
+
+  <!-- Projects Section -->
+ // <section id="projects">
+    
+    <div id="project-list"></div>
+
+    
+
+  <!-- Script Section -->
+  <script>
+    const projectList = document.getElementById("project-list");
+    const form = document.getElementById("add-project-form");
+
+    // Function to add project to DOM
+    function addProjectToDOM(title, description) {
+      const projectItem = document.createElement("div");
+      projectItem.classList.add("project-item");
+
+      const projectTitle = document.createElement("h3");
+      projectTitle.textContent = title;
+
+      const projectDesc = document.createElement("p");
+      projectDesc.textContent = description;
+
+      projectItem.appendChild(projectTitle);
+      projectItem.appendChild(projectDesc);
+      projectList.appendChild(projectItem);
+    }
+
+    // Load projects from backend (or can be replaced with static)
+    async function loadProjects() {
+      try {
+        const res = await fetch('/api/services');
+        const projects = await res.json();
+        projectList.innerHTML = '';
+        projects.forEach(p => addProjectToDOM(p.title, p.description));
+      } catch (err) {
+        console.warn("Failed to load projects. Showing static examples.");
+        // Static fallback
+        
+
+    // Handle form submission
+    form.addEventListener("submit", async function (e) {
+      e.preventDefault();
+
+      const title = document.getElementById("project-title").value.trim();
+      const description = document.getElementById("project-description").value.trim();
+
+      if (!title || !description) {
+        alert("Please enter both title and description.");
+        return;
+      }
+
+      // Add to DOM immediately
+      addProjectToDOM(title, description);
+
+      try {
+        const res = await fetch('/api/services', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ title, description })
+        });
+
+        const data = await res.json();
+        alert(data.message || "Project added successfully.");
+      } catch (error) {
+        alert("Project added locally (offline mode).");
+      }
+
+      form.reset();
+    });
+
+    // Load on page ready
+    window.onload = loadProjects;
+  </script>
+</body>
+</html>

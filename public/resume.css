@@ -1,0 +1,54 @@
+.download-btn {
+  text-decoration: none;
+}
+
+.download-btn button {
+  background-color: #4CAF50; /* Green */
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s;
+}
+
+.download-btn button:hover {
+  background-color: #45a049;
+}
+This CSS will style the button with a green background, white text, and rounded corners. The hover effect changes the background color when the user hovers over the button.
+
+✅ Final Integration
+Ensure that your resume file (resume.pdf) is correctly placed in your project directory. For example, if your project structure is:
+
+bash
+Copy
+Edit
+/project-directory
+  /assets
+    resume.pdf
+  index.html
+  styles.css
+Then, the <a> tag's href should be:
+
+html
+Copy
+Edit
+<a href="assets/resume.pdf" class="download-btn" download="Your_Name_Resume.pdf">
+  <button>Download Resume</button>
+</a>
+🔄 Optional: JavaScript for Enhanced Functionality
+If you want to add additional functionality, such as tracking download clicks or opening a modal before downloading, you can use JavaScript. Here's an example that logs a message when the button is clicked:
+
+html
+Copy
+Edit
+<a href="assets/resume.pdf" class="download-btn" download="Your_Name_Resume.pdf" onclick="trackDownload()">
+  <button>Download Resume</button>
+</a>
+
+<script>
+  function trackDownload() {
+    console.log('Resume download initiated');
+  }
+</script>
